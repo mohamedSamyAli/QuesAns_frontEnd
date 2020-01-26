@@ -1,25 +1,34 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
-
+import{apiKey}from"./helpers/Url"
+import axios from "./helpers/axiosI"
+import AllQuestions from "./component/AllQuestions"
+import AddModal from "./component/AddingQuestion"
+import { Container } from "reactstrap"
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container >
+      <AddModal buttonLabel="Add Question"></AddModal>
+    <button onClick={
+function(){
+  fetch("https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key="+apiKey,{
+    method:'POST',
+    headers:{
+      'content-Type':'application/json'
+    },
+    body: JSON.stringify({
+      email:"smsm@smsm.com",
+      password:"123456789",
+      returnSecureToken:true
+    }) 
+  }).then((resp) => resp.json()).then((e)=>{
+    localStorage.setItem("token",e.idToken)
+    console.log(e)
+  })
+}
+}>Sign IN </button>
+<AllQuestions></AllQuestions>
+    </Container>
+
   );
 }
 
